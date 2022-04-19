@@ -7,9 +7,11 @@ import Home from "./home/Home";
 import UserList from "./user-manage/UserList";
 import RoleList from "./right-manage/RoleList";
 import RightList from "./right-manage/RightList";
+import Nopermission from "./nopermission/Nopermission";
+import {Layout} from "antd";
 
 export default function NewsSandBox() {
-    return (<div>
+    return (<Layout>
         <SideMenu></SideMenu>
         <TopHeader></TopHeader>
 
@@ -18,8 +20,9 @@ export default function NewsSandBox() {
             <Route path={"/user-manage/list"} element={<UserList/>}/>
             <Route path={"/right-manage/role/list"} element={<RoleList/>}/>
             <Route path={"/right-manage/right/list"} element={<RightList/>}/>
-
-            <Route path="*" element={<Navigate to="/home" replace />} />
+            {/*默认页和路由不存在的的页面*/}
+            <Route path="/" element={<Navigate to="/home" replace/>}/>
+            <Route path="*" element={<Nopermission/>}/>
         </Routes>
-    </div>)
+    </Layout>)
 }
