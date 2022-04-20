@@ -5,7 +5,7 @@ import axios from 'axios';
 export default function Home() {
     const ajax = () => {
         //获取数据
-        axios.get("http://localhost:8000/posts").then(res => {
+        axios.get("http://localhost:3000/posts").then(res => {
             console.log(res.data)
         })
     }
