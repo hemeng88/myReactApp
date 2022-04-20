@@ -2,9 +2,7 @@ import IndexRouter from "./router/IndexRouter";
 import "./App.css"
 
 function App() {
-    return <div>
-        <IndexRouter></IndexRouter>
-    </div>
+    return <IndexRouter></IndexRouter>
 }
 
 export default App

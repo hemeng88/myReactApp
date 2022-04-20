@@ -17,7 +17,12 @@ export default function NewsSandBox() {
         <SideMenu></SideMenu>
         <Layout className="site-layout">
             <TopHeader></TopHeader>
-            <Content>
+            <Content
+                className="site-layout-background"
+                style={{
+                    margin: '24px 16px', padding: 24, minHeight: 280,
+                }}
+            >
                 <Routes>
                     <Route path={"/home"} element={<Home/>}/>
                     <Route path={"/user-manage/list"} element={<UserList/>}/>
