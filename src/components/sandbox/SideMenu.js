@@ -43,12 +43,14 @@ export default function SideMenu() {
     return (<Sider trigger={null} collapsible collapsed={false}>
         <div className="logo">全球新闻发布管理系统</div>
         <Menu
-        onClick={(e) => {navigate(e.key)}}
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['1']}
-        mode="inline"
-        theme="dark"
-        items={items}
+            onClick={(e) => {
+                navigate(e.key)
+            }}
+            defaultSelectedKeys={['1']}
+            defaultOpenKeys={['1']}
+            mode="inline"
+            theme="dark"
+            items={items}
         />
     </Sider>)
 }

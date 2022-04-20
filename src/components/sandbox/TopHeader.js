@@ -21,7 +21,7 @@ export default function TopHeader() {
         <div style={{float: "right"}}>
             <span>欢迎admin回来</span>
             <Dropdown overlay={menu}>
-                <Avatar size="large" icon={<UserOutlined />} />
+                <Avatar size="large" icon={<UserOutlined/>}/>
             </Dropdown>
         </div>
     </Header>)
