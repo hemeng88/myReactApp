@@ -9,20 +9,25 @@ import RoleList from "./right-manage/RoleList";
 import RightList from "./right-manage/RightList";
 import Nopermission from "./nopermission/Nopermission";
 import {Layout} from "antd";
+import {Content} from "antd/es/layout/layout";
+import './NewsSandBox.css'
 
 export default function NewsSandBox() {
     return (<Layout>
         <SideMenu></SideMenu>
-        <TopHeader></TopHeader>
-
-        <Routes>
-            <Route path={"/home"} element={<Home/>}/>
-            <Route path={"/user-manage/list"} element={<UserList/>}/>
-            <Route path={"/right-manage/role/list"} element={<RoleList/>}/>
-            <Route path={"/right-manage/right/list"} element={<RightList/>}/>
-            {/*默认页和路由不存在的的页面*/}
-            <Route path="/" element={<Navigate to="/home" replace/>}/>
-            <Route path="*" element={<Nopermission/>}/>
-        </Routes>
+        <Layout className="site-layout">
+            <TopHeader></TopHeader>
+            <Content>
+                <Routes>
+                    <Route path={"/home"} element={<Home/>}/>
+                    <Route path={"/user-manage/list"} element={<UserList/>}/>
+                    <Route path={"/right-manage/role/list"} element={<RoleList/>}/>
+                    <Route path={"/right-manage/right/list"} element={<RightList/>}/>
+                    {/*默认页和路由不存在的的页面*/}
+                    <Route path="/" element={<Navigate to="/home" replace/>}/>
+                    <Route path="*" element={<Nopermission/>}/>
+                </Routes>
+            </Content>
+        </Layout>
     </Layout>)
 }
