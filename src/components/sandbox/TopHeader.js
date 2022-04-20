@@ -1,6 +1,6 @@
 import {useState} from "react";
-import {Dropdown, Menu} from "antd";
-import {DownOutlined, MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
+import {Avatar, Dropdown, Menu} from "antd";
+import {MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined} from "@ant-design/icons";
 import {Header} from "antd/es/layout/layout";
 
 export default function TopHeader() {
@@ -10,29 +10,18 @@ export default function TopHeader() {
     }
     const menu = (<Menu
         items={[{
-            label: (<a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                1st menu item
-            </a>),
+            label: "超级管理员"
         }, {
-            label: (<a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                2nd menu item (disabled)
-            </a>), icon: <DownOutlined/>, disabled: true,
-        }, {
-            label: (<a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-                3rd menu item (disabled)
-            </a>), disabled: true,
-        }, {
-            danger: true, label: 'a danger item',
+            danger: true, label: '退出登录',
         },]}
     />);
     return (<Header className="site-layout-background" style={{padding: "0 16px"}}>
         {collapsed ? <MenuUnfoldOutlined onClick={changeCollapsed}></MenuUnfoldOutlined> :
             <MenuFoldOutlined onClick={changeCollapsed}></MenuFoldOutlined>}
         <div style={{float: "right"}}>
+            <span>欢迎admin回来</span>
             <Dropdown overlay={menu}>
-                <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                    欢迎admin回来 <DownOutlined/>
-                </a>
+                <Avatar size="large" icon={<UserOutlined />} />
             </Dropdown>
         </div>
     </Header>)
