@@ -25,6 +25,18 @@ export default function SideMenu() {
         }
     })
 
+    function filterList(list) {
+        return list.filter(item => {
+            if (item.pagepermisson) {
+                if (item.children && item.children.length) {
+                    item.children = filterList(item.children);
+                }
+                return true;
+            }
+            return false
+        });
+    }
+
     return (<Sider trigger={null} collapsible collapsed={false}>
         <div className="logo">全球新闻发布管理系统</div>
         <Menu
@@ -35,7 +47,7 @@ export default function SideMenu() {
             defaultOpenKeys={['1']}
             mode="inline"
             theme="dark"
-            items={menu}
+            items={filterList(menu)}
         />
     </Sider>)
 }
