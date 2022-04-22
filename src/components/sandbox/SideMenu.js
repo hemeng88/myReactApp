@@ -47,22 +47,23 @@ export default function SideMenu() {
             return false
         });
     }
+
     const location = useLocation()
 
     return (<Sider trigger={null} collapsible collapsed={false}>
         <div className="sidebar">
             <div className="logo">全球新闻发布管理系统</div>
             <div className="menu">
-            <Menu
-                onClick={(e) => {
-                    navigate(e.key)
-                }}
-                selectedKeys={[location.pathname]}
-                defaultOpenKeys={["/"+location.pathname.split("/")[1]]}
-                mode="inline"
-                theme="dark"
-                items={filterList(menu)}
-            />
+                <Menu
+                    onClick={(e) => {
+                        navigate(e.key)
+                    }}
+                    selectedKeys={[location.pathname]}
+                    defaultOpenKeys={["/" + location.pathname.split("/")[1]]}
+                    mode="inline"
+                    theme="dark"
+                    items={filterList(menu)}
+                />
             </div>
         </div>
     </Sider>)
