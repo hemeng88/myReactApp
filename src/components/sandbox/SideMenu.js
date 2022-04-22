@@ -4,6 +4,7 @@ import {Menu} from "antd";
 import './index.css'
 import {useNavigate} from "react-router";
 import axios from "axios";
+import {CheckOutlined, HomeOutlined, KeyOutlined, MessageOutlined, SendOutlined, UserOutlined} from "@ant-design/icons";
 
 export default function SideMenu() {
     const navigate = useNavigate()
@@ -14,7 +15,19 @@ export default function SideMenu() {
             setMenu(res.data)
         })
     }, []);
+
+    const iconList = {
+        "/home": <HomeOutlined/>,
+        "/user-manage": <UserOutlined/>,
+        "/right-manage": <KeyOutlined/>,
+        "/news-manage": <MessageOutlined/>,
+        "/audit-manage": <CheckOutlined/>,
+        "/publish-manage": <SendOutlined/>,
+    }
+
     Object.keys(menu).forEach(key => {
+        menu[key].icon = iconList[menu[key].key]
+        console.log(menu[key].key)
         menu[key].label = menu[key].title
         if (menu[key].children && menu[key].children.length > 0) {
             menu[key].children.forEach(key => {
