@@ -42,6 +42,7 @@ export default function RightList() {
                             let list = dataSource.filter(data => data.id === row.rightId)
                             list[0].children = list[0].children.filter(data => data.id !== row.id)
                             setdataSource([...dataSource])
+                            axios.delete(`http://localhost:3004/children/${row.id}`)
                         }
                     }
                 });
