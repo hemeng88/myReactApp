@@ -58,7 +58,7 @@ export default function SideMenu() {
                     navigate(e.key)
                 }}
                 selectedKeys={[location.pathname]}
-                openKeys={["/"+location.pathname.split("/")[1]]}
+                defaultOpenKeys={["/"+location.pathname.split("/")[1]]}
                 mode="inline"
                 theme="dark"
                 items={filterList(menu)}
