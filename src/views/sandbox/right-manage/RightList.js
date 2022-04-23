@@ -31,6 +31,7 @@ export default function RightList() {
         }
     }, {
         title: '操作', render: (row) => {
+
             const confirmMethod = () => {
                 Modal.confirm({
                     title: '您确定要删除吗？', icon: <ExclamationCircleOutlined/>, okText: '确认', cancelText: '取消', onOk: () => {
@@ -47,6 +48,7 @@ export default function RightList() {
                     }
                 });
             }
+
             const switchMethod = (row) => {
                 row.pagepermisson = row.pagepermisson === 1 ? 0 : 1
                 setdataSource([...dataSource])
@@ -60,6 +62,7 @@ export default function RightList() {
                     })
                 }
             }
+
             return <div>
                 <Button shape="circle" danger icon={<DeleteOutlined/>} onClick={() => confirmMethod()}></Button>
                 <Popover content={<Switch checked={row.pagepermisson} onChange={() => switchMethod(row)}/>}
