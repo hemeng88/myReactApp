@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Button, Modal, Table, Tag} from "antd";
+import {Button, Modal, Popover, Switch, Table, Tag} from "antd";
 import axios from "axios";
 import {DeleteOutlined, EditOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
 
@@ -47,9 +47,26 @@ export default function RightList() {
                     }
                 });
             }
+            const switchMethod = (row) => {
+                row.pagepermisson = row.pagepermisson === 1 ? 0 : 1
+                setdataSource([...dataSource])
+                if (row.grade === 1) {
+                    axios.patch(`http://localhost:3004/rights/${row.id}`, {
+                        pagepermisson: row.pagepermisson
+                    })
+                } else {
+                    axios.patch(`http://localhost:3004/children/${row.id}`, {
+                        pagepermisson: row.pagepermisson
+                    })
+                }
+            }
             return <div>
                 <Button shape="circle" danger icon={<DeleteOutlined/>} onClick={() => confirmMethod()}></Button>
-                <Button shape="circle" type="primary" icon={<EditOutlined/>}></Button>
+                <Popover content={<Switch checked={row.pagepermisson} onChange={() => switchMethod(row)}/>}
+                         title="页面配置项" trigger={row.pagepermisson === undefined ? '' : 'click'}>
+                    <Button shape="circle" type="primary" icon={<EditOutlined/>}
+                            disabled={row.pagepermisson === undefined}></Button>
+                </Popover>
             </div>
         }
     },]
