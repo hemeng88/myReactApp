@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {Button, Modal, Switch, Table} from "antd";
 import axios from "axios";
 import {DeleteOutlined, EditOutlined, ExclamationCircleOutlined} from "@ant-design/icons";
@@ -10,6 +10,7 @@ export default function UserList() {
     const [isAddVisible, setIsAddVisible] = useState(false)
     const [roleList, setRoleList] = useState([])
     const [regionList, setRegionList] = useState([])
+    const addForm = useRef(null)
 
     useEffect(() => {
         axios.get("http://localhost:3004/users?_expand=role").then(res => {
@@ -62,7 +63,22 @@ export default function UserList() {
             </div>
         }
     }]
-
+    const addFormOk = () => {
+        addForm.current.validateFields().then(value => {
+            setIsAddVisible(false)
+            addForm.current.resetFields()
+            //post到后端，生成id，再设置dataSource，方便后面的删除和更新
+            axios.post(`http://localhost:3004/users`, {
+                ...value, "roleState": true, "default": false,
+            }).then(res => {
+                setDataSource([...dataSource, {
+                    ...res.data, role: roleList.filter(item => item.id === value.roleId)[0]
+                }])
+            })
+        }).catch(err => {
+            console.log(err)
+        })
+    }
     return (<div>
         <Button type={"primary"} onClick={() => {
             setIsAddVisible(true)
@@ -76,11 +92,9 @@ export default function UserList() {
             onCancel={() => {
                 setIsAddVisible(false)
             }}
-            onOk={() => {
-
-            }}
+            onOk={() => addFormOk()}
         >
-            <UserForm regionList={regionList} roleList={roleList}></UserForm>
+            <UserForm regionList={regionList} roleList={roleList} ref={addForm}></UserForm>
         </Modal>
     </div>)
 }
