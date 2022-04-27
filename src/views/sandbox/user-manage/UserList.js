@@ -11,8 +11,10 @@ export default function UserList() {
     const [isUpdateVisible, setIsUpdateVisible] = useState(false)
     const [roleList, setRoleList] = useState([])
     const [regionList, setRegionList] = useState([])
+    const [isUpdateDisabled, setIsUpdateDisabled] = useState(false)
     const addForm = useRef(null)
-    const updateForm = useRef(null)
+    const updateForm = useRef(null);
+
 
     useEffect(() => {
         axios.get("http://localhost:3004/users?_expand=role").then(res => {
@@ -97,12 +99,18 @@ export default function UserList() {
         axios.patch(`http://localhost:3004/users/${item.id}`, {roleState: item.roleState})
     }
 
-    const handleUpdate = (row) => {
-        //异步执行保证表单内有数据
+    const handleUpdate = (item) => {
+        //同步执行保证表单内有数据
         setTimeout(() => {
             setIsUpdateVisible(true)
-            updateForm.current.setFieldsValue(row)
+            if (item.roleId === 1) {
+                setIsUpdateDisabled(true)
+            } else {
+                setIsUpdateDisabled(false)
+            }
+            updateForm.current.setFieldsValue(item)
         }, 0)
+        setIsUpdateVisible(true)
     }
 
     return (<div>
@@ -122,7 +130,7 @@ export default function UserList() {
         >
             <UserForm regionList={regionList} roleList={roleList} ref={addForm}></UserForm>
         </Modal>
-        <Modal
+        {<Modal
             visible={isUpdateVisible}
             title="更新用户"
             okText="更新"
@@ -132,7 +140,9 @@ export default function UserList() {
             }}
             onOk={() => updateFormOk()}
         >
-            <UserForm regionList={regionList} roleList={roleList} ref={updateForm}></UserForm>
-        </Modal>
+            <UserForm regionList={regionList} roleList={roleList} ref={updateForm}
+                      isUpdateDisabled={isUpdateDisabled}></UserForm>
+        </Modal>}
+
     </div>)
 }
