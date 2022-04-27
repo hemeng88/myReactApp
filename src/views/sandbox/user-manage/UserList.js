@@ -45,24 +45,28 @@ export default function UserList() {
         title: '用户名', dataIndex: 'username',
     }, {
         title: '用户状态', dataIndex: 'roleState', render: (roleState, row) => {
-            return <Switch checked={roleState} disabled={row.default}></Switch>
+            return <Switch checked={roleState} disabled={row.default} onChange={() => handleChange(row)}></Switch>
         }
     }, {
         title: '操作', render: (row) => {
-            const deleteMethod = () => {
+            const confirmMethod = () => {
                 Modal.confirm({
-                    title: '您确定要删除吗？', icon: <ExclamationCircleOutlined/>, okText: '确认', cancelText: '取消', onOk: () => {
-
+                    title: '您确定要删除吗？', icon: <ExclamationCircleOutlined/>, okText: '确认', cancelText: '取消', onOk() {
+                        deleteMethod(row)
                     }
                 });
             }
             return <div>
-                <Button danger shape={"circle"} icon={<DeleteOutlined/>} onClick={() => deleteMethod()}
+                <Button danger shape={"circle"} icon={<DeleteOutlined/>} onClick={() => confirmMethod()}
                         disabled={row.default}/>
                 <Button type={"primary"} shape={"circle"} icon={<EditOutlined/>} disabled={row.default}/>
             </div>
         }
     }]
+    const deleteMethod = (item) => {
+        setDataSource(dataSource.filter(data => data.id !== item.id))
+        axios.delete(`http://localhost:3004/users/${item.id}`)
+    }
     const addFormOk = () => {
         addForm.current.validateFields().then(value => {
             setIsAddVisible(false)
@@ -78,6 +82,11 @@ export default function UserList() {
         }).catch(err => {
             console.log(err)
         })
+    }
+    const handleChange = (item) => {
+        item.roleState = !item.roleState
+        setDataSource([...dataSource])
+        axios.patch(`http://localhost:3004/users/${item.id}`, {roleState: item.roleState})
     }
     return (<div>
         <Button type={"primary"} onClick={() => {
