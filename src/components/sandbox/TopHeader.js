@@ -2,8 +2,9 @@ import {useState} from "react";
 import {Avatar, Dropdown, Menu} from "antd";
 import {MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined} from "@ant-design/icons";
 import {Header} from "antd/es/layout/layout";
+import {withRouter} from "react-router";
 
-export default function TopHeader() {
+function TopHeader(props) {
     const [collapsed, setCollapsed] = useState(false)
     const changeCollapsed = () => {
         setCollapsed(!collapsed)
@@ -12,7 +13,10 @@ export default function TopHeader() {
         items={[{
             label: "超级管理员"
         }, {
-            danger: true, label: '退出登录',
+            danger: true, label: '退出登录', onClick: () => {
+                localStorage.removeItem('token')
+                props.history.redirect('/login')
+            }
         },]}
     />);
     return (<Header className="site-layout-background" style={{padding: "0 16px"}}>
@@ -26,3 +30,5 @@ export default function TopHeader() {
         </div>
     </Header>)
 }
+
+export default withRouter(TopHeader)
