@@ -11,6 +11,7 @@ export default function UserList() {
     const [isUpdateVisible, setIsUpdateVisible] = useState(false)
     const [roleList, setRoleList] = useState([])
     const [regionList, setRegionList] = useState([])
+    const [current, setCurrent] = useState(null)
     const [isUpdateDisabled, setIsUpdateDisabled] = useState(false)
     const addForm = useRef(null)
     const updateForm = useRef(null);
@@ -37,7 +38,16 @@ export default function UserList() {
     }, [])
 
     const columns = [{
-        title: '区域', dataIndex: 'region', render: (region) => {
+        title: '区域', dataIndex: 'region', filters: [...regionList.map(region => ({
+            text: region.title, value: region.value
+        })), {
+            text: '全球', value: '全球'
+        }], onFilter: (value, item) => {
+            if (value === '全球') {
+                return item.region === ""
+            }
+            return item.region === value
+        }, render: (region) => {
             return <b>{region === "" ? '全球' : region}</b>
         }
     }, {
@@ -91,7 +101,19 @@ export default function UserList() {
     }
 
     const updateFormOk = () => {
-
+        updateForm.current.validateFields().then(value => {
+            setIsUpdateVisible(false)
+            setDataSource(dataSource.map(item => {
+                if (item.id === current.id) {
+                    return {
+                        ...item, ...value, role: roleList.filter(data => data.id === value.roleId)[0]
+                    }
+                }
+                return item
+            }))
+            setIsUpdateDisabled(!isUpdateDisabled)     //更新状态
+            axios.patch(`http://localhost:3004/users/${current.id}`, value)
+        })
     }
 
     const handleChange = (item) => {
@@ -106,12 +128,15 @@ export default function UserList() {
             setIsUpdateVisible(true)
             if (item.roleId === 1) {
                 setIsUpdateDisabled(true)
+                //禁用
             } else {
                 setIsUpdateDisabled(false)
+                //取消禁用
             }
             updateForm.current.setFieldsValue(item)
         }, 0)
         setIsUpdateVisible(true)
+        setCurrent(item)
     }
 
     return (<div>
@@ -138,6 +163,7 @@ export default function UserList() {
             cancelText="取消"
             onCancel={() => {
                 setIsUpdateVisible(false)
+                setIsUpdateDisabled(!isUpdateDisabled)     //更新状态
             }}
             onOk={() => updateFormOk()}
         >
